@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Did you eat na? 💖</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      background: linear-gradient(135deg, #ffe6f0, #e6f7ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      width: 90%;
+      max-width: 400px;
+      min-height: 300px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      animation: fadeIn 1.2s ease;
+      position: relative;
+    }
+
+    h1 {
+      color: #ff4da6;
+      font-size: 1.8rem;
+    }
+
+    .buttons {
+      margin-top: 30px;
+      position: relative;
+      height: 180px; /* enough space to move buttons */
+    }
+
+    button {
+      background: #ff4da6;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.2s;
+      position: absolute;
+    }
+
+    button:hover {
+      background: #ff1a8c;
+      transform: scale(1.05);
+    }
+
+    #yesBtn {
+      left: 30px;
+      bottom: 20px;
+    }
+
+    #noBtn {
+      left: 200px; /* start position */
+      bottom: 20px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    img.cat {
+      width: 220px;
+      margin-top: 20px;
+    }
+
+    .food {
+      position: absolute;
+      width: 60px;
+      animation: drop 3s ease forwards;
+      z-index: 1;
+    }
+
+    #noMessage {
+      color: #ff1a8c;
+      font-size: 1.2rem;
+      margin-top: 15px;
+      font-weight: bold;
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    @keyframes drop {
+      0% {transform: translateY(-50px) rotate(0deg); opacity: 0;}
+      50% {opacity: 1;}
+      100% {transform: translateY(100vh) rotate(360deg); opacity: 0;}
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div id="question">
+      <h1>Have you eaten today? 🍽️</h1>
+      <div class="buttons">
+        <button id="yesBtn" onclick="answerYes()">Yes 😋</button>
+        <button id="noBtn" onclick="moveNo()">No 😔</button>
+      </div>
+      <div id="noMessage">Kumain kana pls🥺</div>
+    </div>
+
+    <div id="yesMessage" class="hidden">
+      <h1>Yipiieeee mama kristine finally eat!! 💕</h1>
+      <p>You gotta stay healthy, okay? 🥰</p>
+      <img class="cat" src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="Jumping Happy Cat">
+    </div>
+  </div>
+
+  <script>
+    const foods = [
+      "https://twemoji.maxcdn.com/v/latest/72x72/1f355.png", // Pizza
+      "https://twemoji.maxcdn.com/v/latest/72x72/1f354.png", // Burger
+      "https://twemoji.maxcdn.com/v/latest/72x72/1f369.png", // Donut
+      "https://twemoji.maxcdn.com/v/latest/72x72/1f35f.png", // Fries
+      "https://twemoji.maxcdn.com/v/latest/72x72/1f363.png", // Sushi
+      "https://twemoji.maxcdn.com/v/latest/72x72/1f368.png"  // Ice cream
+    ];
+
+    function answerYes() {
+      document.getElementById("question").classList.add("hidden");
+      document.getElementById("yesMessage").classList.remove("hidden");
+    }
+
+    function moveNo() {
+      const noBtn = document.getElementById("noBtn");
+      const container = document.querySelector(".buttons");
+      const maxX = container.clientWidth - noBtn.offsetWidth;
+      const maxY = container.clientHeight - noBtn.offsetHeight;
+
+      // random new position
+      const newLeft = Math.random() * maxX;
+      const newTop = Math.random() * maxY;
+
+      noBtn.style.left = newLeft + "px";
+      noBtn.style.top = newTop + "px";
+      noBtn.style.bottom = "auto"; // prevent weird resizing
+
+      // show temporary message
+      const msg = document.getElementById("noMessage");
+      msg.style.display = "block";
+      setTimeout(() => {
+        msg.style.display = "none";
+      }, 1000);
+
+      dropFood();
+    }
+
+    function dropFood() {
+      const food = document.createElement("img");
+      food.src = foods[Math.floor(Math.random() * foods.length)];
+      food.className = "food";
+      food.style.left = Math.random() * window.innerWidth + "px";
+      document.body.appendChild(food);
+
+      setTimeout(() => {
+        food.remove();
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
